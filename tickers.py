@@ -19,9 +19,9 @@ tickernvolume = []
 for i in all_data["data"]:
     tickernvolume.append([i["marketCode"], i["volume24h"], i["currencyVolume24h"]])
 
-top_10 = sorted(tickernvolume, key=lambda x: x[2], reverse=True)[:10]
+top_x = sorted(tickernvolume, key=lambda x: x[2], reverse=True)[:10]
 
 market_codes = []
 
-for i in top_10:
+for i in top_x:
     market_codes.append(i[0])
