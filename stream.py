@@ -46,7 +46,7 @@ async def get_order_book_info(market_code):
                             res["data"]["asks"][0][0],
                             res["data"]["asks"][0][1],
                             res["data"]["bids"][0][0],
-                            res["data"]["bids"][0][0]
+                            res["data"]["bids"][0][1]
                         ])
                         
                         logger.info(res["data"])
