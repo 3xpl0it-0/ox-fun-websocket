@@ -15,12 +15,13 @@ if not ws_url:
 
 collected_data_l = []
 
-async def subscribe_orderbook(ws, symbol):
+async def subscribe_orderbook(ws, symbol, _id):
     subscribe_msg = {
-        "id": 1,
-        "method": "orderbook.subscribe",
+        "id": _id,
+        "method": "orderbook_p.subscribe",
         "params": [symbol]
     }
+    print(subscribe_msg)
     await ws.send(json.dumps(subscribe_msg))
     print(f"Subscribed to orderbook for {symbol}")
 
@@ -37,24 +38,25 @@ async def send_ping(ws):
         except Exception as e:
             print("Ping failed:", e)
 
-async def wrap_up(symbol):
+async def wrap_up(symbol, _id):
     while True:
         s = time.perf_counter()
         try:
             async with websockets.connect(ws_url, ping_interval=None) as ws:
-                await subscribe_orderbook(ws, symbol)
+                await subscribe_orderbook(ws, symbol, _id)
                 while ws.open:
                     response = await ws.recv()
                     res = json.loads(response)
-                    if "symbol" in res:
+                    print(res)
+                    if "orderbook_p" in res:
                         collected_data_l.append([
                                 res.get("sequence"),
-                                res.get("timestamp"),
                                 res.get("symbol"),
-                                res["book"]["asks"][0][0] if res["book"]["asks"] else None,
-                                res["book"]["asks"][0][1] if res["book"]["asks"] else None,
-                                res["book"]["bids"][0][0] if res["book"]["bids"] else None,
-                                res["book"]["bids"][0][1] if res["book"]["bids"] else None
+                                res.get("timestamp"),
+                                res["orderbook_p"]["asks"][0][0] if res["orderbook_p"]["asks"] else None,
+                                res["orderbook_p"]["asks"][0][1] if res["orderbook_p"]["asks"] else None,
+                                res["orderbook_p"]["bids"][0][0] if res["orderbook_p"]["bids"] else None,
+                                res["orderbook_p"]["bids"][0][1] if res["orderbook_p"]["bids"] else None
                             ])
                     if time.perf_counter() - s >= 5:
                         await send_ping(ws)
@@ -67,7 +69,8 @@ async def wrap_up(symbol):
 
 async def main():
     s = time.perf_counter()
-    tasks = [asyncio.create_task(wrap_up(code)) for code in market_codes]
+    tasks = [asyncio.create_task(wrap_up(code[0], code[1])) for code in market_codes]
+    #tasks = [asyncio.create_task(wrap_up("BTCUSDT", 1234))]
     await asyncio.gather(*tasks)
 
 if __name__ == "__main__":

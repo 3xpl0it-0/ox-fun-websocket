@@ -17,9 +17,18 @@ all_data = fetch_ticker_data()
 tickernvolume = []
 
 for i in all_data["data"]:
-    tickernvolume.append([i["marketCode"], i["volume24h"], i["currencyVolume24h"]])
+    try:
+        vol24 = float(i["volume24h"]) # this vol is in ox
+    except:
+        vol24 = "error"
+    try:
+        cvol24 = float(i["currencyVolume24h"]) # this vol is contracts traded
+    except:
+        cvol24 = "error"
 
-top_x = sorted(tickernvolume, key=lambda x: x[2], reverse=True)[:10]
+    tickernvolume.append([i["marketCode"], vol24, cvol24])
+
+top_x = sorted(tickernvolume, key=lambda x: x[1], reverse=True)[:10]
 
 market_codes = []
 
@@ -28,3 +37,5 @@ for i in top_x:
 
 if __name__ == "__main__":
     print(market_codes)
+    print("--------")
+    print(top_x)
