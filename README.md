@@ -1,5 +1,5 @@
 # things to know
-in ```xxx_tickers.py``` where xxx is the exchange, in ```top_x = sorted(tickernvolume, key=lambda x: x[1], reverse=True)[:10]``` you can change the 10 to the amount you want to take.
+in ```xxx_tickers.py``` where xxx is the exchange, in the line ```top_x = sorted(tickernvolume, key=lambda x: x[1], reverse=True)[:10]``` you can change the 10 to the amount you want to take.
 
 
 the ```.env``` file has the urls for good practice even though its public not private, it's just ```OXFUN_API_URL=api.ox.fun```, ```PHEMEX_WS_URL=wss://ws.phemex.com``` and ```BINANCE_BASE_URL=wss://fstream.binance.com```.
