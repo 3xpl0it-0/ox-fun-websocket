@@ -48,8 +48,8 @@ async def main():
                                 res["data"].get("E"),
                                 res["data"]["a"][0][0] if res["data"]["a"] else None,
                                 res["data"]["a"][0][1] if res["data"]["a"] else None,
-                                res["data"]["b"][0][0] if res["data"]["b"] else None,
-                                res["data"]["b"][0][1] if res["data"]["b"] else None
+                                res["data"]["b"][-1][0] if res["data"]["b"] else None,
+                                res["data"]["b"][-1][1] if res["data"]["b"] else None
                             ])
                         
         except Exception as e:
