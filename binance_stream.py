@@ -43,9 +43,9 @@ async def main():
                     print(res)
                     if "data" in res:
                         collected_data_l.append([
-                                res["data"].get("T"),
-                                res["data"].get("s"),
                                 res["data"].get("E"),
+                                res["data"].get("s"),
+                                res["data"].get("T"),
                                 res["data"]["a"][0][0] if res["data"]["a"] else None,
                                 res["data"]["a"][0][1] if res["data"]["a"] else None,
                                 res["data"]["b"][-1][0] if res["data"]["b"] else None,
